@@ -86,7 +86,7 @@ class Grade(models.Model):
     CHOICES = ((2, 'Failure 2'), (3, 'Passing 3'), (4, 'Good 4'), (5, 'Very good 5'), (6, 'Excellent 6'))
     number = models.IntegerField(blank=False, choices=CHOICES)
     student = models.ForeignKey(Student, null=True, on_delete=models.CASCADE, blank=False)
-    subject_class = models.ForeignKey(SubjectClass, null=True, on_delete=models.SET_NULL, blank=False)
+    subject_class = models.ForeignKey(SubjectClass, null=True, on_delete=models.CASCADE, blank=False)
     term = models.ForeignKey(Term, null=True, blank=False, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -101,7 +101,7 @@ class Absence(models.Model):
     term = models.ForeignKey(Term, null=True, blank=False, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f'{self.student.first_name} was absent on {self.date} in {self.subject.name} class'
+        return f'{self.student.first_name} was absent on {self.date}'
 
 
 class Remark(models.Model):
