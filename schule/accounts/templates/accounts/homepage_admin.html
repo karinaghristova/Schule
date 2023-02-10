@@ -1,1 +1,219 @@
-<p>Admin homepage</p>
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<div class="row">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Users by roles</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if teachers_count == 0 and students_count == 0 and parents_count == 0 %}
+                <p>No users registered <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="usersCountChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Number of schools</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                <p>{{schools_count}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Grades count: {{grades_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if grades_count_winter == 0 and grades_count_summer == 0 %}
+                <p>No grades <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="gradeChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Absences count: {{absences_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if absences_count_winter == 0 and absences_count_summer == 0 %}
+                <p>No absences <i class="fa-regular fa-face-smile-beam"></i></p>
+                {% else %}
+                <canvas id="absenceChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Remarks count: {{remarks_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if remarks_count_winter == 0 and remarks_count_summer == 0 %}
+                <p>No remarks <i class="fa-regular fa-face-smile-beam"></i></p>
+                {% else %}
+                <canvas id="remarkChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Praises count: {{praises_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if praises_count_winter == 0 and praises_count_summer == 0 %}
+                <p>No praises <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="praiseChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var xValues = ['Teachers', 'Students', 'Parents']
+    var yValues = ["{{teachers_count}}", "{{students_count}}", "{{parents_count}}"]
+    var colors = ["#6B7A8F", "#F7882F", "#F7C331"];
+    new Chart(
+        document.getElementById('usersCountChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: colors,
+                    data: yValues
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: false,
+                    text: 'Users by roles',
+                },
+                legend: { display: false },
+            }
+        });
+
+    if ("{{grades_count}}" != 0) {
+        xValues = ['Winter term', 'Summer term']
+        yValues = ["{{grades_count_winter}}", "{{grades_count_summer}}"]
+        colors = ["#F7882F", "#F7C331"]
+        new Chart(
+            document.getElementById('gradeChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Grades by term',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{absences_count}}" != 0) {
+        yValues = ["{{absences_count_winter}}", "{{absences_count_summer}}"]
+        new Chart(
+            document.getElementById('absenceChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Absences by term',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{remarks_count}}" != 0) {
+        yValues = ["{{remarks_count_winter}}", "{{remarks_count_summer}}"]
+        new Chart(
+            document.getElementById('remarkChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Remarks by term',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{praises_count}}" != 0) {
+        yValues = ["{{praises_count_winter}}", "{{praises_count_summer}}"]
+        new Chart(
+            document.getElementById('praiseChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Praises by term',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+</script>
+
+{% endblock %}
