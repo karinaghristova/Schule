@@ -1,0 +1,89 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<style>
+    .parent-info {
+        padding: 5px;
+        border-radius: 2%;
+        background-color: lightblue;
+    }
+
+    .child-info {
+        padding: 5px;
+        border-radius: 2%;
+        background-color: #f5d373;
+    }
+</style>
+
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <h2>All parents of students in {{school}}</h2>
+
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Parent</th>
+                <th scope="col">Child</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for parent in parents %}
+            <tr class="bg-light">
+                <td>{{parent.first_name}} {{parent.last_name}}</td>
+                <td>{{parent.child.first_name}} {{parent.child.last_name}}</td>
+                <td>
+                    <a class="btn btn-info" href="{% url 'add_child_to_parent' parent.id %}"><i
+                            class="fa-regular fa-pen-to-square"></i> Assign child</a>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target="#studentDetailModalCenter{{parent.id}}">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Details
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="studentDetailModalCenter{{parent.id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="studentDetailModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-dark text-light">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">{{parent.first_name}}
+                                        {{parent.last_name}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="parent-info">
+                                        <h5 class="text-center">Parent:</h5>
+                                        <p><strong><i class="fa-solid fa-user"></i> First name:</strong> {{parent.first_name}}</p>
+                                        <p><strong><i class="fa-solid fa-user"></i> Last name:</strong> {{parent.last_name}}</p>
+                                        <p><strong><i class="fa-solid fa-phone"></i> Phone number:</strong> {{parent.phone}}</p>
+                                        <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> {{parent.email}}</p>
+                                    </div>
+                                    
+                                    <div class="child-info">
+                                        <h5 class="text-center">Child:</h5>
+                                        <p><strong><i class="fa-solid fa-user"></i> Child:</strong> {{parent.child.first_name}}
+                                            {{parent.child.last_name}}</p>
+                                        <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> {{parent.child.email}}</p>
+                                        <p><strong><i class="fa-solid fa-layer-group"></i> Class level:</strong> {{parent.child.class_level}}</p>
+                                        <p><strong><i class="fa-solid fa-graduation-cap"></i> Student number:</strong> {{parent.child.student_number}}</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- <a class="btn btn-info" href="{% url 'update_student' parent.id %}"><i
+                                        class="fa-regular fa-pen-to-square"></i> Edit</a> -->
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
