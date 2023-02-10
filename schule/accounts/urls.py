@@ -28,9 +28,11 @@ urlpatterns = [
     path('teacher/update-grade/<str:pk>/', views.update_grade, name="update_grade"),
     path('teacher/update-absence/<str:pk>/', views.update_absence, name="update_absence"),
     path('teacher/update-remark/<str:pk>/', views.update_remark, name="update_remark"),
+    path('teacher/subject-class/add-students/<str:pk>', views.edit_students_to_subject_class, name="add_students_to_subject_class"),
 
     path('teacher/delete-grade/<str:pk>/', views.remove_grade, name="delete_grade"),
     path('teacher/delete-absence/<str:pk>/', views.remove_absence, name="delete_absence"),
     path('teacher/delete-remark/<str:pk>/', views.remove_remark, name="delete_remark"),
+    path('teacher/delete-subject-class/<str:pk>/', views.remove_subject_class, name="delete_subject_class"),
 
 ]

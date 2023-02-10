@@ -151,6 +151,44 @@ def __get_context_for_admin_homepage__():
     }
     return context
 
+def __get_context_for_teacher_homepage__(teacher):
+    school = teacher.school
+    students_in_school_count = Student.objects.all().filter(school=school).count()
+    parents_in_school_count = Parent.objects.all().filter(school=school).count()
+    grades_in_school_count = Grade.objects.all().count()
+    grades_in_school_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher).count()
+    failure_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=2).count()
+    passing_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=3).count()
+    good_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=4).count()
+    very_good_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=5).count()
+    excellent_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=6).count()
+    absences_in_school_count = Absence.objects.all().filter(student__school=school).count()
+    absences_in_school_written_by_teacher_count = Absence.objects.all().filter(subject_class__teacher=teacher).count()
+    remarks_in_school_count = Remark.objects.all().filter(student__school=school).count()
+    remarks_in_school_written_by_teacher = Remark.objects.all().filter(teacher=teacher).count()
+    praises_in_school_count = Praise.objects.all().filter(student__school=school).count()
+    praises_in_school_written_by_teacher = Praise.objects.all().filter(teacher=teacher).count()
+
+    context ={
+        'school': school.name,
+        'students_in_school_count': students_in_school_count,
+        'parents_in_school_count': parents_in_school_count,
+        'grades_in_school_count': grades_in_school_count,
+        'grades_in_school_written_by_teacher': grades_in_school_written_by_teacher,
+        'failure_grades_written_by_teacher': failure_grades_written_by_teacher,
+        'passing_grades_written_by_teacher': passing_grades_written_by_teacher,
+        'good_grades_written_by_teacher': good_grades_written_by_teacher,
+        'very_good_grades_written_by_teacher': very_good_grades_written_by_teacher,
+        'excellent_grades_written_by_teacher': excellent_grades_written_by_teacher,
+        'absences_in_school_count': absences_in_school_count,
+        'absences_in_school_written_by_teacher_count': absences_in_school_written_by_teacher_count,
+        'remarks_in_school_count': remarks_in_school_count,
+        'remarks_in_school_written_by_teacher': remarks_in_school_written_by_teacher,
+        'praises_in_school_count': praises_in_school_count,
+        'praises_in_school_written_by_teacher': praises_in_school_written_by_teacher,
+    }
+    return context
+
 
 @login_required(login_url='login')
 def home(request):
@@ -159,7 +197,8 @@ def home(request):
         return render(request, 'accounts/homepage_admin.html', context)
 
     if request.user.groups.filter(name='teacher').exists():
-        context = {}
+        teacher = Teacher.objects.get(user=request.user)
+        context = __get_context_for_teacher_homepage__(teacher)
         return render(request, 'accounts/homepage_teacher.html', context)
 
     if request.user.groups.filter(name='student').exists():
@@ -184,7 +223,7 @@ def students(request):
         'school': teacher_school.name,
         'students': all_students_in_school,
     }
-    return render(request, 'accounts/students.html', context)
+    return render(request, 'accounts/teacher/students.html', context)
 
 
 @login_required(login_url='login')
@@ -200,7 +239,7 @@ def teacher_subjects(request):
         'all_subjects': all_subjects,
         'teacher_subject_classes': teacher_subject_classes,
     }
-    return render(request, 'accounts/teacher_subjects.html', context)
+    return render(request, 'accounts/teacher/teacher_subjects.html', context)
 
 
 @login_required(login_url='login')
@@ -216,7 +255,7 @@ def parents(request):
         'school': teacher_school.name,
         'parents': all_parents_in_school,
     }
-    return render(request, 'accounts/parents.html', context)
+    return render(request, 'accounts/teacher/parents.html', context)
 
 
 @login_required(login_url='login')
@@ -233,7 +272,7 @@ def teacher_subject_class_detail(request, pk):
         'subject_class_students': subject_class_students,
         'all_grades': all_grades,
     }
-    return render(request, 'accounts/subject_class_detail.html', context)
+    return render(request, 'accounts/teacher/subject_class_detail.html', context)
 
 
 @login_required(login_url='login')
@@ -254,7 +293,7 @@ def teacher_absences(request):
         'all_absences': all_absences,
         'school': teacher_school,
     }
-    return render(request, 'accounts/teacher_absences.html', context)
+    return render(request, 'accounts/teacher/teacher_absences.html', context)
 
 
 @login_required(login_url='login')
@@ -265,7 +304,7 @@ def teacher_remarks(request):
         teacher=teacher).order_by('term', 'student__first_name', 'student__last_name')
 
     context = {'remarks': all_remarks_made_by_teacher, 'teacher': teacher}
-    return render(request, "accounts/teacher_remarks.html", context)
+    return render(request, "accounts/teacher/teacher_remarks.html", context)
 
 
 @login_required(login_url='login')
@@ -288,7 +327,7 @@ def teacher_assign_student_to_parent(request, pk):
             form.save()
             return redirect("parents")
     context = {'form': form, 'parent': parent}
-    return render(request, 'accounts/teacher_parent_update_form.html', context)
+    return render(request, 'accounts/teacher/teacher_parent_update_form.html', context)
 
 
 @login_required(login_url='login')
@@ -302,7 +341,7 @@ def create_subject(request):
             form.save()
             return redirect("teacher_subjects")
     context = {'form': form, }
-    return render(request, 'accounts/subject_create_form.html', context)
+    return render(request, 'accounts/teacher/subject_create_form.html', context)
 
 
 @login_required(login_url='login')
@@ -319,7 +358,7 @@ def create_subject_class(request):
             form.save()
             return redirect("teacher_subjects")
     context = {'form': form, }
-    return render(request, 'accounts/subject_class_create_form.html', context)
+    return render(request, 'accounts/teacher/subject_class_create_form.html', context)
 
 
 @login_required(login_url='login')
@@ -340,7 +379,7 @@ def create_grade_for_student(request, pk):
             form.save()
             return redirect("subject_class_detail", pk)
     context = {'form': form, }
-    return render(request, 'accounts/grade_create_form.html', context)
+    return render(request, 'accounts/teacher/grade_create_form.html', context)
 
 
 @login_required(login_url='login')
@@ -361,7 +400,7 @@ def create_absence(request, pk):
             form.save()
             return redirect("subject_class_detail", pk)
     context = {'form': form, }
-    return render(request, 'accounts/absence_create_form.html', context)
+    return render(request, 'accounts/teacher/absence_create_form.html', context)
 
 
 @login_required(login_url='login')
@@ -387,7 +426,7 @@ def create_remark(request):
             form.save()
             return redirect("teacher_remarks")
     context = {'form': form, }
-    return render(request, 'accounts/remark_create_form.html', context)
+    return render(request, 'accounts/teacher/remark_create_form.html', context)
 
 
 @login_required(login_url='login')
@@ -407,7 +446,7 @@ def update_student(request, pk):
             return redirect("students")
 
     context = {'form': form}
-    return render(request, 'accounts/student_update_form.html', context)
+    return render(request, 'accounts/teacher/student_update_form.html', context)
 
 
 @login_required(login_url='login')
@@ -418,8 +457,7 @@ def update_subject_class(request, pk):
 
     subject_class = SubjectClass.objects.get(id=pk)
     form = SubjectClassUpdateForm(instance=subject_class)
-    form.fields['students'] = forms.ModelMultipleChoiceField(queryset=Student.objects.all(
-    ).filter(school=teacher_school, class_level=subject_class.class_level))
+
 
     if request.method == "POST":
         form = SubjectClassUpdateForm(request.POST, instance=subject_class)
@@ -428,7 +466,7 @@ def update_subject_class(request, pk):
             return redirect("teacher_subjects")
 
     context = {'form': form}
-    return render(request, 'accounts/subject_class_update_form.html', context)
+    return render(request, 'accounts/teacher/subject_class_update_form.html', context)
 
 
 @login_required(login_url='login')
@@ -444,7 +482,7 @@ def update_grade(request, pk):
             return redirect("teacher_subjects")
 
     context = {'form': form, 'grade': grade}
-    return render(request, 'accounts/grade_update_form.html', context)
+    return render(request, 'accounts/teacher/grade_update_form.html', context)
 
 
 @login_required(login_url='login')
@@ -459,7 +497,7 @@ def update_absence(request, pk):
             return redirect("teacher_absences")
 
     context = {'form': form, 'absence': absence}
-    return render(request, 'accounts/absence_update_form.html', context)
+    return render(request, 'accounts/teacher/absence_update_form.html', context)
 
 
 @login_required(login_url='login')
@@ -478,7 +516,26 @@ def update_remark(request, pk):
             form.save()
             return redirect("teacher_remarks")
     context = {'form': form, 'remark': remark}
-    return render(request, "accounts/remark_update_form.html", context)
+    return render(request, "accounts/teacher/remark_update_form.html", context)
+
+@login_required(login_url='login')
+@teacher_only
+def edit_students_to_subject_class(request, pk):
+    subject_class = SubjectClass.objects.get(id=pk)
+    form = SubjectClassAddStudentsForm(instance=subject_class)
+
+    teacher = Teacher.objects.get(user=request.user)
+    teacher_school = teacher.school
+    students = Student.objects.all().filter(school=teacher_school, class_level=subject_class.class_level)
+
+    form.fields['students'] = forms.ModelMultipleChoiceField(queryset=students)
+    if request.method == "POST":
+        form = SubjectClassAddStudentsForm(request.POST, instance=subject_class)
+        if form.is_valid():
+            form.save()
+            return redirect("subject_class_detail", pk)
+    context = {'form': form, 'subject_class': subject_class, 'students': students}
+    return render(request, "accounts/teacher/subject_class_edit_students_form.html", context)
 
 
 @login_required(login_url='login')
@@ -490,7 +547,7 @@ def remove_grade(request, pk):
         return redirect("teacher_subjects")
 
     context = {'item': grade}
-    return render(request, 'accounts/delete_grade.html', context)
+    return render(request, 'accounts/teacher/delete_grade.html', context)
 
 
 @login_required(login_url='login')
@@ -501,7 +558,7 @@ def remove_absence(request, pk):
         absence.delete()
         return redirect("teacher_absences")
     context = {"item": absence}
-    return render(request, "accounts/delete_absence.html", context)
+    return render(request, "accounts/teacher/delete_absence.html", context)
 
 
 @login_required(login_url='login')
@@ -512,4 +569,14 @@ def remove_remark(request, pk):
         remark.delete()
         return redirect("teacher_remarks")
     context = {"item": remark}
-    return render(request, "accounts/delete_remark.html", context)
+    return render(request, "accounts/teacher/delete_remark.html", context)
+
+@login_required(login_url='login')
+@teacher_only
+def remove_subject_class(request, pk):
+    subject_class = SubjectClass.objects.get(id=pk)
+    if request.method == "POST":
+        subject_class.delete()
+        return redirect("teacher_subjects")
+    context = {"item": subject_class}
+    return render(request, "accounts/teacher/delete_subject_class.html", context)
