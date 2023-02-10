@@ -1,0 +1,55 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Subject <a href="{% url 'create_subject' %}" style="margin-left: 20px; text-decoration: none;"><i class="fa-solid fa-plus"></i></a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if all_subjects.count == 0 %}
+            <h2>No subjects to show</h2>
+            {% else %}
+            {% for subject in all_subjects %}
+            <tr class="bg-light">
+                <td>{{subject.name}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Subject class <a href="{% url 'create_subject_class' %}" style="margin-left: 20px; text-decoration: none;"><i class="fa-solid fa-plus"></i></a></th>
+                <th scopre="col">Class level</th>
+                <th scope="col">Number of students</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if teacher_subject_classes.count == 0 %}
+            <h2>No subject classes to show</h2>
+            {% else %}
+            {% for subject_class in teacher_subject_classes %}
+            <tr class="bg-light">
+                <td>{{subject_class.subject.name}}</td>
+                <td>{{subject_class.class_level}}</td>
+                <td>{{subject_class.students.count}}</td>
+                <td>
+                    <a class="btn btn-warning" href="{% url 'subject_class_detail' subject_class.id %}"><i class="fa-solid fa-circle-info"></i> Details</a>
+                    <a class="btn btn-info" href="{% url 'update_subject_class' subject_class.id %}"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                    <a class="btn btn-danger" href=""><i class="fa-regular fa-trash-can"></i> Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+    
+</div>
+
+{% endblock %}
