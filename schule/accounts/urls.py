@@ -13,11 +13,13 @@ urlpatterns = [
     path('teacher/parents/', views.parents, name="parents"),
     path('teacher/subjects/', views.teacher_subjects, name="teacher_subjects"),
     path('teacher/subject_class/<str:pk>', views.teacher_subject_class_detail, name="subject_class_detail"),
+    path('teacher/absences', views.teacher_absences, name="teacher_absences"),
 
     path('teacher/assign-child-to-parent/<str:pk>/', views.teacher_assign_student_to_parent, name="add_child_to_parent"),
     path('teacher/create-subject/', views.create_subject, name="create_subject"),
     path('teacher/create-subject-class/', views.create_subject_class, name="create_subject_class"),
     path('teacher/create-grade/<str:pk>/', views.create_grade_for_student, name="create_grade"),
+    path('teacher/create-absence/<str:pk>/', views.create_absence, name="add_absence"),
 
     path('teacher/update-student/<str:pk>/', views.update_student, name="update_student"),
     path('teacher/update-subject-class/<str:pk>/', views.update_subject_class, name="update_subject_class"),

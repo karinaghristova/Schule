@@ -238,6 +238,25 @@ def teacher_subject_class_detail(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
+def teacher_absences(request):
+    teacher = Teacher.objects.get(user=request.user)
+    teacher_school = teacher.school
+    all_subject_classes_of_teacher = SubjectClass.objects.all().filter(teacher=teacher)
+    
+    all_absences = []
+    for subject_class in all_subject_classes_of_teacher:
+        all_absences_for_subject_class = Absence.objects.all().filter(subject_class=subject_class)
+        for absence in all_absences_for_subject_class:
+            all_absences.append(absence)
+
+    context = {
+        'all_absences': all_absences,
+        'school': teacher_school,
+    }
+    return render(request, 'accounts/teacher_absences.html', context)
+
+@login_required(login_url='login')
+@teacher_only
 def teacher_assign_student_to_parent(request, pk):
     teacher = Teacher.objects.get(user=request.user)
     teacher_school = teacher.school
@@ -306,6 +325,24 @@ def create_grade_for_student(request, pk):
             return redirect("subject_class_detail", pk)
     context = {'form': form,}
     return render(request, 'accounts/grade_create_form.html', context)
+
+@login_required(login_url='login')
+@teacher_only
+def create_absence(request, pk):
+    form = AbsenceForm()
+    subject_class = SubjectClass.objects.get(id=pk)
+    students_for_subject_class = subject_class.students.all()
+    form.fields['student'] = forms.ModelChoiceField(queryset=students_for_subject_class)
+    form.fields['subject_class'] = forms.ModelChoiceField(
+        queryset=SubjectClass.objects.all().filter(id=pk))
+
+    if request.method == "POST":
+        form = AbsenceForm(request.POST, initial={"subject_class": subject_class})
+        if form.is_valid():
+            form.save()
+            return redirect("subject_class_detail", pk)
+    context = {'form': form,}
+    return render(request, 'accounts/absence_create_form.html', context)
 
 
 @login_required(login_url='login')

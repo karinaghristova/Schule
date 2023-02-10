@@ -39,6 +39,8 @@
         <a href="{% url 'create_grade' subject_class.id %}" style="margin-left: 20px; text-decoration: none;">
             <i class="fa-solid fa-plus"></i> Add grades</a>
         {% endif %}
+        <a href="{% url 'add_absence' subject_class.id %}" style="margin-left: 20px; text-decoration: none;">
+            <i class="fa-solid fa-person-circle-question"></i> Add absence</a>
     </h2>
 
 

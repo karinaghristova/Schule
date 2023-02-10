@@ -1,0 +1,35 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <h2>All absences of students in {{school}}</h2>
+
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Student name</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Date</th>
+                <th scope="col">Excused</th>
+                <th scope="col">Excused</th>
+            </tr>
+        </thead>
+        <tbody>
+           {% for absence in all_absences %}
+           <tr>
+            <td scope="col">{{absence.student.first_name}} {{absence.student.last_name}}</td>
+            <td scope="col">{{absence.subject_class.subject.name}}</td>
+            <td scope="col">{{absence.date}}</td>
+            {% if absence.excused %}
+            <th scope="col"><i class="fa-solid fa-check" style="color: green;"></i></td>
+            {% else %}
+            <th scope="col"><i class="fa-solid fa-xmark" style="color: red;"></i></td>
+            {% endif %}
+            <th scope="col"><a class="btn btn-info" href=""><i class="fa-solid fa-pen-to-square"></i> Edit</a></th>
+           </tr>
+           {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
