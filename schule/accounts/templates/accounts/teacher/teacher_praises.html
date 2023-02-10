@@ -1,0 +1,34 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <h2>All praises written by {{teacher.first_name}} {{teacher.last_name}}
+    <a href="{% url 'create_praise' %}" style="margin-left: 20px; text-decoration: none;">
+        <i class="fa-solid fa-plus"></i> Add praises</a>
+    </h2>
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Term</th>
+                <th scope="col">Student name</th>
+                <th scope="col">Content</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+           {% for praise in praises %}
+           <tr class="bg-light">
+            <td scope="col">{{praise.term}}</td>
+            <td scope="col">{{praise.student.first_name}} {{praise.student.last_name}}</td>
+            <td scope="col">{{praise.content}}</td>
+            <td scope="col">
+                <a class="btn btn-info" href="{% url 'update_praise' praise.id %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <a class="btn btn-danger" href="{% url 'delete_praise' praise.id %}"><i class="fa-regular fa-trash-can"></i> Delete</a>
+            </td>
+           </tr>
+           {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
