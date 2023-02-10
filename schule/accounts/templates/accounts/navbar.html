@@ -21,19 +21,36 @@
         <a class="nav-link" href="">Welcome, {{request.user.first_name}}</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home</a>
+        <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
       </li>
       {% endif %}
 
-      {% if is_teacher %}
-      {% endif %}
+      {% for group in request.user.groups.all %}
+        {% if group.name == 'teacher' %}
+          {% include 'accounts/navbar_teacher.html' %}
+        {% endif %}
+        {% if group.name == 'student' %}
+          {% include 'accounts/navbar_student.html' %}
+        {% endif %}
+        {% if group.name == 'parent' %}
+          {% include 'accounts/navbar_parent.html' %}
+        {% endif %}
+      {% endfor %}
+    </ul>
 
-      {% if is_student %}
+    <ul class="navbar-nav" >
+      {% if request.user.is_authenticated %}
+      <li>
+      <a class="nav-link" href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+      </li>
+      {% else %}
+      <li>
+        <a class="nav-link" href="{% url 'register' %}"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+      </li>
+      <li>
+        <a class="nav-link" href="{% url 'login' %}"><i class="fa-solid fa-house-chimney-user"></i> Login</a>
+      </li>
       {% endif %}
-
-      {% if is_parent %}
-      {% endif %}
-
     </ul>
   </div>
 </nav>
