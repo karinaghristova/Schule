@@ -40,9 +40,10 @@
                 <td>{{subject_class.class_level}}</td>
                 <td>{{subject_class.students.count}}</td>
                 <td>
-                    <a class="btn btn-warning" href="{% url 'subject_class_detail' subject_class.id %}"><i class="fa-solid fa-circle-info"></i> Details</a>
+                    <a class="btn btn-warning" href="{% url 'subject_class_detail' subject_class.id %}"><i class="fa-solid fa-circle-info"></i> View</a>
                     <a class="btn btn-info" href="{% url 'update_subject_class' subject_class.id %}"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
-                    <a class="btn btn-danger" href=""><i class="fa-regular fa-trash-can"></i> Delete</a>
+                    <a class="btn btn-info" href="{% url 'add_students_to_subject_class' subject_class.id %}"><i class="fa-regular fa-pen-to-square"></i> Edit students</a>
+                    <a class="btn btn-danger" href="{% url 'delete_subject_class' subject_class.id %}"><i class="fa-regular fa-trash-can"></i> Delete</a>
                 </td>
             </tr>
             {% endfor %}

@@ -72,7 +72,12 @@ class SubjectClassCreateForm(ModelForm):
 class SubjectClassUpdateForm(ModelForm):
     class Meta:
         model = SubjectClass
-        fields = ['class_level', 'subject', 'students']
+        fields = ['class_level', 'subject']
+
+class SubjectClassAddStudentsForm(ModelForm):
+    class Meta:
+        model = SubjectClass
+        fields = ['students']
 
 
 class AbsenceForm(ModelForm):

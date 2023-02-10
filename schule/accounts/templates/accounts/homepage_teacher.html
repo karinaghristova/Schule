@@ -2,6 +2,256 @@
 
 {% block content %}
 
-<p>Teacher's homepage</p>
+<div class="row">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Students and parents at {{school}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if students_in_school_count == 0 and parents_in_school_count == 0 %}
+                <p>No users registered <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="usersCountChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Grades written by me: {{grades_in_school_written_by_teacher}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if grades_in_school_written_by_teacher == 0 %}
+                <p>No grades written by me <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="gradesByTeacherChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Grades count: {{grades_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if grades_in_school_count == 0 and grades_in_school_written_by_teacher == 0 %}
+                <p>No grades <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="gradeChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Absences count: {{absences_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if absences_in_school_count == 0 and absences_in_school_written_by_teacher_count == 0 %}
+                <p>No absences <i class="fa-regular fa-face-smile-beam"></i></p>
+                {% else %}
+                <canvas id="absenceChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Remarks count: {{remarks_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if remarks_in_school_count == 0 and remarks_in_school_written_by_teacher == 0 %}
+                <p>No remarks <i class="fa-regular fa-face-smile-beam"></i></p>
+                {% else %}
+                <canvas id="remarkChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Praises count: {{praises_count}}</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div class="d-flex justify-content-center form_container">
+                {% if praises_in_school_count == 0 and praises_in_school_written_by_teacher == 0 %}
+                <p>No praises <i class="fa-regular fa-face-frown-open"></i></p>
+                {% else %}
+                <canvas id="praiseChart" style="width:100%;max-width:800px"></canvas>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var xValues = ['Students', 'Parents']
+    var yValues = ["{{students_in_school_count}}","{{parents_in_school_count}}"]
+    var colors = ["#F7882F", "#F7C331"]
+    new Chart(
+        document.getElementById('usersCountChart'),
+        {
+            type: 'pie',
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: colors,
+                    data: yValues
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: false,
+                    text: 'Count of students and parents in "{{school}}"',
+                },
+                legend: { display: false },
+            }
+        });
+
+    if ("{{grades_in_school_count}}" != 0) {
+        xValues = ['Grades in school', 'Grades written by me']
+        yValues = ["{{grades_in_school_count}}", "{{grades_in_school_written_by_teacher}}"]
+        new Chart(
+            document.getElementById('gradeChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Grades',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{absences_in_school_count}}" != 0) {
+        xValues = ['Absences in school', 'Absences written by me']
+        yValues = ["{{absences_in_school_count}}", "{{absences_in_school_written_by_teacher_count}}"]
+        new Chart(
+            document.getElementById('absenceChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Absences',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{remarks_in_school_count}}" != 0) {
+        xValues = ['Remarks in school', 'Remarks written by me']
+        yValues = ["{{remarks_in_school_count}}", "{{remarks_in_school_written_by_teacher}}"]
+        new Chart(
+            document.getElementById('remarkChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Remarks',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{praises_in_school_count}}" != 0) {
+        xValues = ['Praises in school', 'Praises written by me']
+        yValues = ["{{praises_in_school_count}}", "{{praises_in_school_written_by_teacher}}"]
+        new Chart(
+            document.getElementById('praiseChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Praises by term',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+    if ("{{grades_in_school_written_by_teacher}}" != 0) {
+        xValues = ['Failure: 2', 'Passing: 3', 'Good: 4', 'Very good: 5', 'Excellent: 6']
+        yValues = ["{{failure_grades_written_by_teacher}}", 
+        "{{passing_grades_written_by_teacher}}", 
+        "{{good_grades_written_by_teacher}}", 
+        "{{very_good_grades_written_by_teacher}}", 
+        "{{excellent_grades_written_by_teacher}}"]
+
+        colors = ['#FF3131', '#F7882F', '#F7C331', '#B8F731', '#45F731']
+        new Chart(
+            document.getElementById('gradesByTeacherChart'),
+            {
+                type: 'pie',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        backgroundColor: colors,
+                        data: yValues
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Grades',
+                    },
+                    legend: { display: false },
+                }
+            });
+    }
+
+</script>
 
 {% endblock %}

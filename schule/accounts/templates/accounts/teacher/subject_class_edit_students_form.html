@@ -1,0 +1,29 @@
+{% extends 'accounts/main.html '%}
+{% load static %}
+{% block content %}
+
+<div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+    <div class="card-header bg-dark text-light text-center">
+        <h5>Add students to {{subject_class}}</h5>
+    </div>
+    <div class="card-body d-flex justify-content-center align-items-center container">
+        {% if students.count == 0 %}
+        <h5>No students suitable for {{subject_class}}</h5>
+        {% else %}
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class=" row d-flex justify-content-center align-items-center container">
+                <div class="form-group">{{ field.label_tag }}</div>
+                <div class="form-group">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center align-items-center container">
+                <button type="submit" class="btn text-light bg-dark" style="margin-top: 10px;">Add students</button>
+            </div>
+        </form>
+        {% endif %}
+        
+    </div>
+</div>
+{% endblock %}
