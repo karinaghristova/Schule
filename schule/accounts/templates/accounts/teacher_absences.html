@@ -17,16 +17,16 @@
         </thead>
         <tbody>
            {% for absence in all_absences %}
-           <tr>
+           <tr class="bg-light">
             <td scope="col">{{absence.student.first_name}} {{absence.student.last_name}}</td>
             <td scope="col">{{absence.subject_class.subject.name}}</td>
             <td scope="col">{{absence.date}}</td>
             {% if absence.excused %}
-            <th scope="col"><i class="fa-solid fa-check" style="color: green;"></i></td>
+            <td scope="col"><i class="fa-solid fa-check" style="color: green;"></i></td>
             {% else %}
-            <th scope="col"><i class="fa-solid fa-xmark" style="color: red;"></i></td>
+            <td scope="col"><i class="fa-solid fa-xmark" style="color: red;"></i></td>
             {% endif %}
-            <th scope="col"><a class="btn btn-info" href=""><i class="fa-solid fa-pen-to-square"></i> Edit</a></th>
+            <td scope="col"><a class="btn btn-info" href="{% url 'update_absence' absence.id %}"><i class="fa-solid fa-pen-to-square"></i> Edit</a></td>
            </tr>
            {% endfor %}
         </tbody>
