@@ -18,10 +18,7 @@
     <ul class="navbar-nav">
       {% if request.user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="">Welcome, {{request.user.first_name}}</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a>
+        <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house"></i>  Welcome, {{request.user.first_name}}</a>
       </li>
       {% endif %}
 
