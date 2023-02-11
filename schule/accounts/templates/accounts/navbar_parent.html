@@ -1,4 +1,7 @@
-
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'parent_account' %}"><i class="fa-solid fa-house-user"></i> Account</a>
+</li>
+{% if parent.child %}
 <li class="nav-item">
     <a class="nav-link" href="{% url 'parent_grades' %}"><i class="fa-solid fa-user-graduate"></i> Grades</a>
 </li>
@@ -11,3 +14,4 @@
 <li class="nav-item">
     <a class="nav-link" href="{% url 'parent_praises' %}"><i class="fa-solid fa-award"></i> Praises</a>
 </li>
+{% endif %}
