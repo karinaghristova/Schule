@@ -31,13 +31,13 @@ Teachers have a more active role in Schule as they can do the following thing:
 • See information about them
 • Update information about themselves
 ## If they have a child:
-• Same things, but also...
-• See statistics about:
-- The amount of grades their child has for both terms
-- The amount of grades their child has for both terms according to their value
-- The amount absences their child has for both terms
-- The amount remarks their child has for both terms
-- The amount praises their child has for both terms
+- Same things, but also...
+- See statistics about:
+* The amount of grades their child has for both terms
+* The amount of grades their child has for both terms according to their value
+* The amount absences their child has for both terms
+* The amount remarks their child has for both terms
+* The amount praises their child has for both terms
 • See grades of their child
 - Amount of grades for every term and for the year
 - Amount of grades for every term according to their values
