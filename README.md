@@ -74,3 +74,7 @@ Basically the same things their parents can do :)
 - See praises teachers have made for them
 - Amount of praises for every term and for the year
 - Every praise 
+# Techologies used
+- Python Django
+- Bootstrap
+- Chart.js
