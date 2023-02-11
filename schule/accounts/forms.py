@@ -45,6 +45,13 @@ class StudentUpdateForm(ModelForm):
                   'email', 'phone', 'class_level', 'student_number']
 
 
+class StudentUpdateForStudentsForm(ModelForm):
+    class Meta:
+        model = Student
+        fields = ['first_name', 'middle_name', 'last_name',
+                  'email', 'phone']
+
+
 class ParentTeacherUpdateForm(ModelForm):
     class Meta:
         model = Parent
