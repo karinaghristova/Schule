@@ -3,6 +3,9 @@
 Schule is my final project for a course in university called Programming with Python. Schule is a Django application that represents an online gradebook. 
 # Who can use Schule?
 Upon registration every user selects a role - a parent or a student. Registration for teachers happens at a different place for a reason.
+# What can admin do?
+Well, except for everything... 
+- There is also a homepage for them where they can see statistics about the amount of users and their count by roles, the amount of schools, grades, absences, remarks and praises
 # What can teachers do?
 Teachers have a more active role in Schule as they can do the following thing:
 - Edit information of students from their school
@@ -27,6 +30,7 @@ Teachers have a more active role in Schule as they can do the following thing:
 - Edit praises they have made
 - Delete praises they have made
 # What can parents do?
+Parents and students have more of a passive role in this application, but there is still a lot of things they can do passively
 ## If they don't have a child
 - See information about them
 - Update information about themselves
