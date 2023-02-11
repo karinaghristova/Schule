@@ -266,6 +266,7 @@ def __get_context_for_student_homepage__(student):
     return context
 
 @login_required(login_url='login')
+@allow_users(allowed_roles=['admin','teacher', 'parent', 'student'])
 def home(request):
     if request.user.is_staff:
         context = __get_context_for_admin_homepage__()
