@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px; background-color: #1ac8ef;"">
         <div class="card-header bg-dark text-light text-center">
             <h5>Me</h5>
         </div>
@@ -21,22 +21,22 @@
     </div>
     
   {% if parent.child %}
-  <div class="card col-md-3" style="margin: auto; margin-top: 25px;">
-    <div class="card-header bg-dark text-light text-center">
-        <h5>Child</h5>
-    </div>
-    <div class="card-body d-flex justify-content-center align-items-center container">
-        <div>
-            <div class="child-info">
-                <p><strong><i class="fa-solid fa-user"></i> Child:</strong> {{parent.child.first_name}}
-                    {{parent.child.last_name}}</p>
-                <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> {{parent.child.email}}</p>
-                <p><strong><i class="fa-solid fa-layer-group"></i> Class level:</strong> {{parent.child.class_level}}</p>
-                <p><strong><i class="fa-solid fa-graduation-cap"></i> Student number:</strong> {{parent.child.student_number}}</p>
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px; background-color: #F7C331;">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Child</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div>
+                <div class="child-info">
+                    <p><strong><i class="fa-solid fa-user"></i> Child:</strong> {{parent.child.first_name}}
+                        {{parent.child.last_name}}</p>
+                    <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> {{parent.child.email}}</p>
+                    <p><strong><i class="fa-solid fa-layer-group"></i> Class level:</strong> {{parent.child.class_level}}</p>
+                    <p><strong><i class="fa-solid fa-graduation-cap"></i> Student number:</strong> {{parent.child.student_number}}</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
   {% endif %}
 </div>
 
