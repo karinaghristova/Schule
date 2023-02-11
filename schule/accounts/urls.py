@@ -39,16 +39,20 @@ urlpatterns = [
     path('teacher/delete-praise/<str:pk>/', views.teacher_remove_praise, name="delete_praise"),
     path('teacher/delete-subject-class/<str:pk>/', views.teacher_remove_subject_class, name="delete_subject_class"),
 
-
+    path('parent/account', views.parent_account, name="parent_account"),
     path('parent/grades', views.parent_grades, name="parent_grades"),
     path('parent/absences', views.parent_absences, name="parent_absences"),
     path('parent/remarks', views.parent_remarks, name="parent_remarks"),
     path('parent/praises', views.parent_praises, name="parent_praises"),
 
+    path('parent/update-info', views.parent_update_info, name="parent_update_info"),
 
+    path('student/account', views.student_account, name="student_account"),
     path('student/grades', views.student_grades, name="student_grades"),
     path('student/absences', views.student_absences, name="student_absences"),
     path('student/remarks', views.student_remarks, name="student_remarks"),
     path('student/praises', views.student_praises, name="student_praises"),
+
+    path('student/update-info', views.student_update_info, name="student_update_info"),
 
 ]
