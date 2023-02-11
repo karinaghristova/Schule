@@ -10,6 +10,23 @@
     <table class="table">
         <thead class="text-light bg-dark ">
             <tr>
+                <th scope="col">Absences (winter term)</th>
+                <th scope="col">Absences (summer term)</th>
+                <th scope="col">Absences (year)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-light">
+                <td scope="col">{{absences_winter.count}}</td>
+                <td scope="col">{{absences_summer.count}}</td>
+                <td scope="col">{{absences.count}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
                 <th scope="col">Subject</th>
                 <th scope="col">Date</th>
                 <th scope="col">Excused</th>
