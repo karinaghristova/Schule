@@ -11,6 +11,8 @@ from .decorators import *
 # Create your views here.
 
 from .teacher_views import *
+from .parent_views import *
+from .student_views import *
 
 @unauthenticated_user
 def registerPage(request):
