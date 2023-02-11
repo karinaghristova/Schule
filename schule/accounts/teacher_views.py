@@ -1,17 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
 from django import forms
 
 from accounts.models import *
 from accounts.forms import *
-from accounts.decorators import *
+from accounts.decorators import teacher_only
 
 @login_required(login_url='login')
 @teacher_only
-def students(request):
+def teacher_students(request):
     teacher = Teacher.objects.get(user=request.user)
     teacher_school = teacher.school
 
@@ -43,7 +40,7 @@ def teacher_subjects(request):
 
 @login_required(login_url='login')
 @teacher_only
-def parents(request):
+def teacher_parents(request):
     teacher = Teacher.objects.get(user=request.user)
     teacher_school = teacher.school
 
@@ -141,7 +138,7 @@ def teacher_assign_student_to_parent(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def create_subject(request):
+def teacher_create_subject(request):
     form = SubjectCreateForm()
 
     if request.method == "POST":
@@ -155,7 +152,7 @@ def create_subject(request):
 
 @login_required(login_url='login')
 @teacher_only
-def create_subject_class(request):
+def teacher_create_subject_class(request):
     teacher = Teacher.objects.get(user=request.user)
     form = SubjectClassCreateForm()
     form.fields['teacher'] = forms.ModelChoiceField(
@@ -172,7 +169,7 @@ def create_subject_class(request):
 
 @login_required(login_url='login')
 @teacher_only
-def create_grade_for_student(request, pk):
+def teacher_create_grade_for_student(request, pk):
     form = GradeForm()
     subject_class = SubjectClass.objects.get(id=pk)
 
@@ -193,7 +190,7 @@ def create_grade_for_student(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def create_absence(request, pk):
+def teacher_create_absence(request, pk):
     form = AbsenceForm()
     subject_class = SubjectClass.objects.get(id=pk)
     students_for_subject_class = subject_class.students.all()
@@ -214,7 +211,7 @@ def create_absence(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def create_remark(request):
+def teacher_create_remark(request):
     form = RemarkForm()
     teacher = Teacher.objects.get(user=request.user)
     all_subject_classes = SubjectClass.objects.all().filter(teacher=teacher)
@@ -240,7 +237,7 @@ def create_remark(request):
 
 @login_required(login_url='login')
 @teacher_only
-def create_praise(request):
+def teacher_create_praise(request):
     form = PraiseForm()
     teacher = Teacher.objects.get(user=request.user)
     all_subject_classes = SubjectClass.objects.all().filter(teacher=teacher)
@@ -265,7 +262,7 @@ def create_praise(request):
 
 @login_required(login_url='login')
 @teacher_only
-def update_student(request, pk):
+def teacher_update_student(request, pk):
     student = Student.objects.get(id=pk)
     form = StudentUpdateForm(instance=student)
     if request.method == "POST":
@@ -285,7 +282,7 @@ def update_student(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def update_subject_class(request, pk):
+def teacher_update_subject_class(request, pk):
     teacher = Teacher.objects.get(user=request.user)
     teacher_school = teacher.school
 
@@ -305,7 +302,7 @@ def update_subject_class(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def update_grade(request, pk):
+def teacher_update_grade(request, pk):
     grade = Grade.objects.get(id=pk)
     form = GradeUpdateForm(instance=grade)
 
@@ -321,7 +318,7 @@ def update_grade(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def update_absence(request, pk):
+def teacher_update_absence(request, pk):
     absence = Absence.objects.get(id=pk)
     form = AbsenceForm(instance=absence)
     if request.method == "POST":
@@ -336,7 +333,7 @@ def update_absence(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def update_remark(request, pk):
+def teacher_update_remark(request, pk):
     teacher = Teacher.objects.get(user=request.user)
     remark = Remark.objects.get(id=pk)
     form = RemarkForm(instance=remark)
@@ -354,7 +351,7 @@ def update_remark(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def update_praise(request, pk):
+def teacher_update_praise(request, pk):
     teacher = Teacher.objects.get(user=request.user)
     praise = Praise.objects.get(id=pk)
     form = PraiseForm(instance=praise)
@@ -372,7 +369,7 @@ def update_praise(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def edit_students_to_subject_class(request, pk):
+def teacher_edit_students_to_subject_class(request, pk):
     subject_class = SubjectClass.objects.get(id=pk)
     form = SubjectClassAddStudentsForm(instance=subject_class)
 
@@ -392,7 +389,7 @@ def edit_students_to_subject_class(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def remove_grade(request, pk):
+def teacher_remove_grade(request, pk):
     grade = Grade.objects.get(id=pk)
     if request.method == "POST":
         grade.delete()
@@ -404,7 +401,7 @@ def remove_grade(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def remove_absence(request, pk):
+def teacher_remove_absence(request, pk):
     absence = Absence.objects.get(id=pk)
     if request.method == "POST":
         absence.delete()
@@ -415,7 +412,7 @@ def remove_absence(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def remove_remark(request, pk):
+def teacher_remove_remark(request, pk):
     remark = Remark.objects.get(id=pk)
     if request.method == "POST":
         remark.delete()
@@ -425,7 +422,7 @@ def remove_remark(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def remove_praise(request, pk):
+def teacher_remove_praise(request, pk):
     praise = Praise.objects.get(id=pk)
     if request.method == "POST":
         praise.delete()
@@ -435,7 +432,7 @@ def remove_praise(request, pk):
 
 @login_required(login_url='login')
 @teacher_only
-def remove_subject_class(request, pk):
+def teacher_remove_subject_class(request, pk):
     subject_class = SubjectClass.objects.get(id=pk)
     if request.method == "POST":
         subject_class.delete()
