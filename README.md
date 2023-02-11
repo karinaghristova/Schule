@@ -1,9 +1,9 @@
 # Schule
-##What is Schule?
+## What is Schule?
 Schule is my final project for a course in university called Programming with Python. Schule is a Django application that represents an online gradebook. 
-#Who can use Schule?
+# Who can use Schule?
 Upon registration every user selects a role - a parent or a student. Registration for teachers happens at a different place for a reason.
-##What can teachers do?
+## What can teachers do?
 Teachers have a more active role in Schule as they can do the following thing:
 • Edit information of students from their school
 • See details about students from their school
@@ -26,11 +26,11 @@ Teachers have a more active role in Schule as they can do the following thing:
 • Add praises
 • Edit praises they have made
 • Delete praises they have made
-##What can parents do?
-#If they don't have a child
+## What can parents do?
+# If they don't have a child
 • See information about them
 • Update information about themselves
-#If they have a child:
+# If they have a child:
 • Same things, but also...
 • See statistics about:
 - The amount of grades their child has for both terms
@@ -51,7 +51,7 @@ Teachers have a more active role in Schule as they can do the following thing:
 • See praises of their child
 - Amount of praises for every term and for the year
 - Every praise of the child 
-##What can students do?
+## What can students do?
 Basically the same things their parents can do :)
 • See information about them
 • Update information about themselves
