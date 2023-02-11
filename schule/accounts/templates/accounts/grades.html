@@ -1,0 +1,86 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<style>
+    .grade {
+        text-decoration: none;
+        padding: 5px;
+        border-radius: 20%;
+        color: black;
+    }
+
+    .grade-2 {
+        background-color: #FF3131;
+    }
+
+    .grade-3 {
+        background-color: #F7882F;
+    }
+
+    .grade-4 {
+        background-color: #F7C331;
+    }
+
+    .grade-5 {
+        background-color: #B8F731;
+    }
+
+    .grade-6 {
+        background-color: #45F731;
+    }
+</style>
+
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <h3>Grades of {{student.first_name}} {{student.last_name}}</h3>
+    {% if student_grades.count == 0 %}
+    <h2>No grades to show</h2>
+    {% else %}
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Subject</th>
+                <th scope="col">Grades (winter term)</th>
+                <th scope="col">Average grade (winter term)</th>
+                <th scope="col">Grades (summer term)</th>
+                <th scope="col">Average grade (summer term)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, value in student_grades.items %}
+            <tr class="bg-light">
+
+                <td scope="col">{{key}}</td>
+                {% for k, val in value.items %}
+                {% if k == 'grades_winter' %}
+                <td>
+                    <ul class="list-inline">
+                        {% for grade in val %}
+                        <li class="list-inline-item grade grade-{{grade}}">{{grade}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                {% endif %}
+                {% if k == 'average_grade_winter' %}
+                <td>{{val}}</td>
+                {% endif %}
+                {% if k == 'grades_summer' %}
+                <td>
+                    <ul class="list-inline">
+                        {% for grade in val %}
+                        <li class="list-inline-item grade grade-{{grade}}">{{grade}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                {% endif %}
+                {% if k == 'average_grade_summer' %}
+                <td>{{val}}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<div class="container justify-content-center" style="margin-top: 20px;">
+    <h2>All remarks of {{student.first_name}} {{student.last_name}}</h2>
+    {% if remarks.count == 0 %}
+    <h2>No remarks to show</h2>
+    {% else %}
+    <table class="table">
+        <thead class="text-light bg-dark ">
+            <tr>
+                <th scope="col">Teacher name</th>
+                <th scope="col">Content</th>
+                <th scope="col">Term</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for remark in remarks %}
+            <tr class="bg-light">
+                <td scope="col">{{remark.teacher.first_name}} {{remark.teacher.last_name}}</td>
+                <td scope="col">{{remark.content}}</td>
+                <td scope="col">{{remark.term}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}
