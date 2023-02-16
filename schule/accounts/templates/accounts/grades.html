@@ -45,10 +45,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-light">
-                <td scope="col">{{average_grade_winter_term}}</td>
-                <td scope="col">{{average_grade_summer_term}}</td>
-                <td scope="col">{{average_grade}}</td>
+            <tr class="text-center">
+                <td scope="col" style="background-color: #1ac8ef;">{{average_grade_winter_term}}</td>
+                <td scope="col" style="background-color: #F7C331;">{{average_grade_summer_term}}</td>
+                <td scope="col" style="background-color: #55e91a;">{{average_grade}}</td>
             </tr>
         </tbody>
     </table>
@@ -61,21 +61,21 @@
                 <th colspan="2" scope="col">Very good grades</th>
                 <th colspan="2" scope="col">Excellent grades</th>
             </tr>
-            <tr>
-                <th class="text-center" scope="col">W</th>
-                <th class="text-center" scope="col">S</th>
-                <th class="text-center" scope="col">W</th>
-                <th class="text-center" scope="col">S</th>
-                <th class="text-center" scope="col">W</th>
-                <th class="text-center" scope="col">S</th>
-                <th class="text-center" scope="col">W</th>
-                <th class="text-center" scope="col">S</th>
-                <th class="text-center" scope="col">W</th>
-                <th class="text-center" scope="col">S</th>
+            <tr class="text-center">
+                <th scope="col">W</th>
+                <th scope="col">S</th>
+                <th scope="col">W</th>
+                <th scope="col">S</th>
+                <th scope="col">W</th>
+                <th scope="col">S</th>
+                <th scope="col">W</th>
+                <th scope="col">S</th>
+                <th scope="col">W</th>
+                <th scope="col">S</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="bg-light">
+            <tr class="bg-light text-center">
                 <td style="background-color: #1ac8ef;" scope="col">{{failure_grades_winter}}</td>
                 <td style="background-color: #F7C331;" scope="col">{{failure_grades_summer}}</td>
                 <td style="background-color: #1ac8ef;" scope="col">{{passing_grades_winter}}</td>
@@ -95,9 +95,9 @@
             <tr>
                 <th scope="col">Subject</th>
                 <th scope="col">Grades (winter term)</th>
-                <th scope="col">Average grade (winter term)</th>
+                <th scope="col">Grade (winter term)</th>
                 <th scope="col">Grades (summer term)</th>
-                <th scope="col">Average grade (summer term)</th>
+                <th scope="col">Grade (summer term)</th>
             </tr>
         </thead>
         <tbody>
@@ -116,7 +116,7 @@
                 </td>
                 {% endif %}
                 {% if k == 'average_grade_winter' %}
-                <td>{{val}}</td>
+                <td style="background-color: #92e5f8;">{{val}}</td>
                 {% endif %}
                 {% if k == 'grades_summer' %}
                 <td>
@@ -128,7 +128,7 @@
                 </td>
                 {% endif %}
                 {% if k == 'average_grade_summer' %}
-                <td>{{val}}</td>
+                <td style="background-color: #ffd256;">{{val}}</td>
                 {% endif %}
                 {% endfor %}
             </tr>

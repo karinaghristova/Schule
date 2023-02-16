@@ -89,7 +89,7 @@ def get_student_remarks_for_term(student, term):
     remarks = Remark.objects.all().filter(student=student, term__name=term)
     return remarks
 
-def getcount_of_student_remarks_for_term(student, term):
+def get_count_of_student_remarks_for_term(student, term):
     remarks_count = Remark.objects.all().filter(student=student, term__name=term).count()
     return remarks_count
 
