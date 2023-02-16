@@ -14,6 +14,7 @@ from .teacher_views import *
 from .parent_views import *
 from .student_views import *
 
+
 @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
@@ -154,25 +155,38 @@ def __get_context_for_admin_homepage__():
     }
     return context
 
+
 def __get_context_for_teacher_homepage__(teacher):
     school = teacher.school
     students_in_school_count = Student.objects.all().filter(school=school).count()
     parents_in_school_count = Parent.objects.all().filter(school=school).count()
     grades_in_school_count = Grade.objects.all().count()
-    grades_in_school_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher).count()
-    failure_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=2).count()
-    passing_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=3).count()
-    good_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=4).count()
-    very_good_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=5).count()
-    excellent_grades_written_by_teacher = Grade.objects.all().filter(subject_class__teacher=teacher, number=6).count()
-    absences_in_school_count = Absence.objects.all().filter(student__school=school).count()
-    absences_in_school_written_by_teacher_count = Absence.objects.all().filter(subject_class__teacher=teacher).count()
-    remarks_in_school_count = Remark.objects.all().filter(student__school=school).count()
-    remarks_in_school_written_by_teacher = Remark.objects.all().filter(teacher=teacher).count()
-    praises_in_school_count = Praise.objects.all().filter(student__school=school).count()
-    praises_in_school_written_by_teacher = Praise.objects.all().filter(teacher=teacher).count()
+    grades_in_school_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher).count()
+    failure_grades_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher, number=2).count()
+    passing_grades_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher, number=3).count()
+    good_grades_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher, number=4).count()
+    very_good_grades_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher, number=5).count()
+    excellent_grades_written_by_teacher = Grade.objects.all().filter(
+        subject_class__teacher=teacher, number=6).count()
+    absences_in_school_count = Absence.objects.all().filter(
+        student__school=school).count()
+    absences_in_school_written_by_teacher_count = Absence.objects.all().filter(
+        subject_class__teacher=teacher).count()
+    remarks_in_school_count = Remark.objects.all().filter(
+        student__school=school).count()
+    remarks_in_school_written_by_teacher = Remark.objects.all().filter(
+        teacher=teacher).count()
+    praises_in_school_count = Praise.objects.all().filter(
+        student__school=school).count()
+    praises_in_school_written_by_teacher = Praise.objects.all().filter(
+        teacher=teacher).count()
 
-    context ={
+    context = {
         'school': school.name,
         'students_in_school_count': students_in_school_count,
         'parents_in_school_count': parents_in_school_count,
@@ -191,6 +205,7 @@ def __get_context_for_teacher_homepage__(teacher):
         'praises_in_school_written_by_teacher': praises_in_school_written_by_teacher,
     }
     return context
+
 
 def __get_context_for_parent_homepage__(parent):
     has_child = parent.child
@@ -234,6 +249,7 @@ def __get_context_for_parent_homepage__(parent):
         }
     return context
 
+
 def __get_context_for_student_homepage__(student):
     context = {
         'student': student,
@@ -262,11 +278,12 @@ def __get_context_for_student_homepage__(student):
         'praises': get_count_of_student_praises(student),
         'praises_winter': get_count_of_student_praises_for_term(student, 'winter'),
         'praises_summer': get_count_of_student_praises_for_term(student, 'summer'),
-        }
+    }
     return context
 
+
 @login_required(login_url='login')
-@allow_users(allowed_roles=['admin','teacher', 'parent', 'student'])
+@allow_users(allowed_roles=['admin', 'teacher', 'parent', 'student'])
 def home(request):
     if request.user.is_staff:
         context = __get_context_for_admin_homepage__()
@@ -286,5 +303,3 @@ def home(request):
         parent = Parent.objects.get(user=request.user)
         context = __get_context_for_parent_homepage__(parent)
         return render(request, 'accounts/homepage_parent.html', context)
-
-

@@ -6,6 +6,34 @@ from accounts.models import *
 from accounts.forms import *
 from accounts.decorators import teacher_only
 
+
+@login_required(login_url='login')
+@teacher_only
+def teacher_account(request):
+    teacher = Teacher.objects.get(user=request.user)
+    context = {'teacher': teacher,}
+    return render(request, 'accounts/teacher/teacher_account.html', context)
+
+
+@login_required(login_url='login')
+@teacher_only
+def teacher_update_info(request):
+    teacher = Teacher.objects.get(user=request.user)
+    form = TeacherUpdateForm(instance=teacher)
+    if request.method == "POST":
+        form = TeacherUpdateForm(request.POST, instance=teacher)
+        if form.is_valid():
+            user = teacher.user
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save()
+            form.save()
+            return redirect("home")
+
+    context = {'form': form}
+    return render(request, 'accounts/account_update_form.html', context)
+
 @login_required(login_url='login')
 @teacher_only
 def teacher_students(request):
@@ -57,8 +85,6 @@ def teacher_parents(request):
 @login_required(login_url='login')
 @teacher_only
 def teacher_subject_class_detail(request, pk):
-    teacher = Teacher.objects.get(user=request.user)
-
     subject_class = SubjectClass.objects.get(id=pk)
     subject_class_students = subject_class.students.all().order_by('student_number')
     all_grades = Grade.objects.all().filter(subject_class=subject_class)
@@ -283,12 +309,8 @@ def teacher_update_student(request, pk):
 @login_required(login_url='login')
 @teacher_only
 def teacher_update_subject_class(request, pk):
-    teacher = Teacher.objects.get(user=request.user)
-    teacher_school = teacher.school
-
     subject_class = SubjectClass.objects.get(id=pk)
     form = SubjectClassUpdateForm(instance=subject_class)
-
 
     if request.method == "POST":
         form = SubjectClassUpdateForm(request.POST, instance=subject_class)

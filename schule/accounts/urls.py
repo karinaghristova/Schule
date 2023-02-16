@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('', views.home, name="home"),
     
+    path('teacher/account', views.teacher_account, name="teacher_account"),
     path('teacher/students/', views.teacher_students, name="students"),
     path('teacher/parents/', views.teacher_parents, name="parents"),
     path('teacher/subjects/', views.teacher_subjects, name="teacher_subjects"),
@@ -25,6 +26,7 @@ urlpatterns = [
     path('teacher/create-remark', views.teacher_create_remark, name="create_remark"),
     path('teacher/create-praise', views.teacher_create_praise, name="create_praise"),
 
+    path('teacher/update-info', views.teacher_update_info, name="teacher_update_info"),
     path('teacher/update-student/<str:pk>/', views.teacher_update_student, name="update_student"),
     path('teacher/update-subject-class/<str:pk>/', views.teacher_update_subject_class, name="update_subject_class"),
     path('teacher/update-grade/<str:pk>/', views.teacher_update_grade, name="update_grade"),

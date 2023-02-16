@@ -1,0 +1,25 @@
+{% extends 'accounts/main.html '%}
+
+{% block content %}
+
+<div class="row">
+    <div class="card col-md-3" style="margin: auto; margin-top: 25px; background-color: #1ac8ef;"">
+        <div class="card-header bg-dark text-light text-center">
+            <h5>Me</h5>
+        </div>
+        <div class="card-body d-flex justify-content-center align-items-center container">
+            <div>
+                <div class="teacher-info">
+                    <p><strong><i class="fa-solid fa-user"></i> First name:</strong> {{teacher.first_name}}</p>
+                    <p><strong><i class="fa-solid fa-user"></i> Last name:</strong> {{teacher.last_name}}</p>
+                    <p><strong><i class="fa-solid fa-phone"></i> Phone number:</strong> {{teacher.phone}}</p>
+                    <p><strong><i class="fa-solid fa-envelope"></i> Email:</strong> {{teacher.email}}</p>
+                    <a class="btn bg-dark text-light d-flex  justify-content-center" href="{% url 'teacher_update_info' %}">Update info</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
