@@ -24,7 +24,7 @@ def student_update_info(request):
             return redirect("home")
 
     context = {'form': form}
-    return render(request, 'accounts/student/student_update_form.html', context)
+    return render(request, 'accounts/account_update_form.html', context)
 
 @login_required(login_url='login')
 @student_only
