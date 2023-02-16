@@ -207,52 +207,8 @@ def __get_context_for_teacher_homepage__(teacher):
     return context
 
 
-def __get_context_for_parent_homepage__(parent):
-    has_child = parent.child
-    if has_child:
-        student = parent.child
-        context = {
-            'parent': parent,
-            'has_child': has_child,
-            'student': student,
-            'grades_count': get_count_of_grades_for_student(student),
-            'grades_count_winter': get_count_of_grades_by_term(student, 'winter'),
-            'grades_count_summer': get_count_of_grades_by_term(student, 'summer'),
-            'average_grade_winter_term': get_average_grade_for_term_of_student(student, 'winter'),
-            'average_grade_summer_term': get_average_grade_for_term_of_student(student, 'summer'),
-            'average_grade': get_average_grade_of_student(student),
-            'failure_grades_winter': get_count_of_grades_by_value_and_term(student, 2, 'winter'),
-            'failure_grades_summer': get_count_of_grades_by_value_and_term(student, 2, 'summer'),
-            'passing_grades_winter': get_count_of_grades_by_value_and_term(student, 3, 'winter'),
-            'passing_grades_summer': get_count_of_grades_by_value_and_term(student, 3, 'summer'),
-            'good_grades_winter': get_count_of_grades_by_value_and_term(student, 4, 'winter'),
-            'good_grades_summer': get_count_of_grades_by_value_and_term(student, 4, 'summer'),
-            'very_good_grades_winter': get_count_of_grades_by_value_and_term(student, 5, 'winter'),
-            'very_good_grades_summer': get_count_of_grades_by_value_and_term(student, 5, 'summer'),
-            'excellent_grades_winter': get_count_of_grades_by_value_and_term(student, 6, 'winter'),
-            'excellent_grades_summer': get_count_of_grades_by_value_and_term(student, 6, 'summer'),
-            'absences': get_count_of_student_absences(student),
-            'absences_winter': get_count_of_student_absences_for_term(student, 'winter'),
-            'absences_summer': get_count_of_student_absences_for_term(student, 'summer'),
-            'remarks': get_count_of_student_remarks(student),
-            'remarks_winter': getcount_of_student_remarks_for_term(student, 'winter'),
-            'remarks_summer': getcount_of_student_remarks_for_term(student, 'summer'),
-            'praises': get_count_of_student_praises(student),
-            'praises_winter': get_count_of_student_praises_for_term(student, 'winter'),
-            'praises_summer': get_count_of_student_praises_for_term(student, 'summer'),
-        }
-    else:
-        context = {
-            'parent': parent,
-            'has_child': has_child,
-            'child': parent.child,
-        }
-    return context
-
-
-def __get_context_for_student_homepage__(student):
+def __get_additional_context_for_parents_and_students_homepage__(student):
     context = {
-        'student': student,
         'grades_count': get_count_of_grades_for_student(student),
         'grades_count_winter': get_count_of_grades_by_term(student, 'winter'),
         'grades_count_summer': get_count_of_grades_by_term(student, 'summer'),
@@ -279,6 +235,34 @@ def __get_context_for_student_homepage__(student):
         'praises_winter': get_count_of_student_praises_for_term(student, 'winter'),
         'praises_summer': get_count_of_student_praises_for_term(student, 'summer'),
     }
+    return context
+
+def __get_context_for_parent_homepage__(parent):
+    has_child = parent.child
+    if has_child:
+        student = parent.child
+        context = {
+            'parent': parent,
+            'has_child': has_child,
+            'student': student,
+        }
+        additional_context = __get_additional_context_for_parents_and_students_homepage__(parent.child)
+        context.update(additional_context)
+    else:
+        context = {
+            'parent': parent,
+            'has_child': has_child,
+        }
+    return context
+
+
+def __get_context_for_student_homepage__(student):
+    context = {
+        'student': student,
+    }
+    additional_context = __get_additional_context_for_parents_and_students_homepage__(student)
+    context.update(additional_context)
+
     return context
 
 
