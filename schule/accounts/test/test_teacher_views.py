@@ -775,3 +775,194 @@ class TestTeacherViewsAccessibility(TestCase):
             reverse('delete_subject_class', args=[self.subject_class.id]))
 
         self.assertEqual(response.status_code, 302)
+
+
+class TeacherViewsWithPOST(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+        self.city = City.objects.create(name='City')
+        self.school = School.objects.create(name='TestSchool', city=self.city)
+
+        self.groupless_user = User.objects.create_user(
+            username='testuser', password='password',
+            first_name='TestUser', last_name='TestUser',
+            email='testuser@email.com')
+
+        self.teacher_user = User.objects.create_user(
+            username='teacher', password='password',
+            first_name='Teacher', last_name='Teacher',
+            email='teacher@email.com')
+        self.teacher = Teacher.objects.create(user=self.teacher_user,
+                                              first_name=self.teacher_user.first_name, last_name=self.teacher_user.last_name,
+                                              email=self.teacher_user.email, school=self.school)
+
+        self.student_user = User.objects.create_user(
+            username='student', password='password',
+            first_name='Student', last_name='Student', email='student@email.com')
+        self.student = Student.objects.create(user=self.student_user,
+                                              first_name=self.student_user.first_name, last_name=self.student_user.last_name,
+                                              email=self.student_user.email, school=self.school,
+                                              class_level=10, student_number=1)
+
+        self.parent_user = User.objects.create_user(
+            username='parent', password='password',
+            first_name='Parent', last_name='Parent', email='parent@email.com')
+        self.parent = Parent.objects.create(user=self.parent_user,
+                                            first_name=self.parent_user.first_name, last_name=self.parent_user.last_name,
+                                            email=self.parent_user.email, school=self.school)
+
+        self.teacher_group = Group.objects.create(name='teacher')
+        self.parent_group = Group.objects.create(name='parent')
+        self.student_group = Group.objects.create(name='student')
+
+        self.teacher_user.groups.add(self.teacher_group)
+        self.parent_user.groups.add(self.parent_group)
+        self.student_user.groups.add(self.student_group)
+
+        self.subject = Subject.objects.create(name='Subject')
+        self.subject_class = SubjectClass.objects.create(class_level=10,
+                                                         subject=self.subject, teacher=self.teacher)
+        self.subject_class.students.add(self.student)
+
+        self.winter_term = Term.objects.create(name='winter')
+        self.summer_term = Term.objects.create(name='summer')
+
+
+    def test_teacher_create_subject_POST_adds_subject(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_subject')
+        data = {'name': 'Subject2'}
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Subject.objects.all()[1].name, 'Subject2')
+
+    def test_teacher_create_subject_POST_no_data_does_not_add_subject(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_subject')
+        data = {}
+        response = self.client.post(url, data)
+
+        self.assertEquals(Subject.objects.count(), 1)
+        self.assertEquals(response.status_code, 200)
+
+    def test_teacher_create_subject_class_POST_adds_subject_class(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_subject_class')
+        class_level = 1
+        data = {
+            'class_level': class_level,
+            'subject': self.subject.id,
+            'teacher': self.teacher.id,
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(SubjectClass.objects.all()[
+                          1].class_level, class_level)
+        self.assertEquals(SubjectClass.objects.all()[1].subject, self.subject)
+        self.assertEquals(SubjectClass.objects.all()[1].teacher, self.teacher)
+
+    def test_teacher_create_subject_class_POST_no_data_does_not_add_subject_class(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_subject_class')
+        class_level = 1
+        data = {}
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_teacher_teacher_create_absence_POST_adds_absence(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('add_absence', args=[self.subject_class.id])
+        date_today = date.today()
+        data = {
+            'date': date_today,
+            'excused': True,
+            'subject_class': self.subject_class.id,
+            'student': self.student.id,
+            'term': self.winter_term.id,
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Absence.objects.count(), 1)
+        self.assertEquals(Absence.objects.first().date, date_today)
+        self.assertEquals(Absence.objects.first().excused, True)
+        self.assertEquals(
+            Absence.objects.first().subject_class, self.subject_class)
+        self.assertEquals(Absence.objects.first().student, self.student)
+        self.assertEquals(Absence.objects.first().term, self.winter_term)
+
+    def test_teacher_create_absence_POST_no_data_does_not_add_absence(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('add_absence', args=[self.subject_class.id])
+        data = {}
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(Absence.objects.count(), 0)
+        self.assertEquals(response.status_code, 200)
+
+    def test_teacher_create_remark_POST_adds_remark(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_remark')
+        content = 'Some content'
+        data = {
+            'content': content,
+            'student': self.student.id,
+            'teacher': self.teacher.id,
+            'term': self.winter_term.id,
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Remark.objects.count(), 1)
+        self.assertEquals(Remark.objects.first().content, content)
+        self.assertEquals(Remark.objects.first().student, self.student)
+        self.assertEquals(Remark.objects.first().teacher, self.teacher)
+        self.assertEquals(Remark.objects.first().term, self.winter_term)
+
+    def test_teacher_create_remark_POST_no_data_does_not_add_remark(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_remark')
+        data = {}
+        response = self.client.post(url, data)
+
+        self.assertEquals(Remark.objects.count(), 0)
+        self.assertEquals(response.status_code, 200)
+
+    def test_teacher_create_praise_POST_adds_praise(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_praise')
+        content = 'Some content'
+        data = {
+            'content': content,
+            'student': self.student.id,
+            'teacher': self.teacher.id,
+            'term': self.winter_term.id,
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Praise.objects.count(), 1)
+        self.assertEquals(Praise.objects.first().content, content)
+        self.assertEquals(Praise.objects.first().student, self.student)
+        self.assertEquals(Praise.objects.first().teacher, self.teacher)
+        self.assertEquals(Praise.objects.first().term, self.winter_term)
+
+    def test_teacher_create_praise_POST_no_data_does_not_add_praise(self):
+        self.client.login(username='teacher', password='password')
+        url = reverse('create_praise')
+        data = {}
+        response = self.client.post(url, data)
+
+        self.assertEquals(Praise.objects.count(), 0)
+        self.assertEquals(response.status_code, 200)
