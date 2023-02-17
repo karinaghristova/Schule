@@ -167,3 +167,27 @@ class TestParentUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, parent_update_info)
 
 
+class TestStudentUrls(SimpleTestCase):
+    def test_student_account_url_is_resolved(self):
+        url = reverse('student_account')
+        self.assertEquals(resolve(url).func, student_account)
+
+    def test_student_grades_url_is_resolved(self):
+        url = reverse('student_grades')
+        self.assertEquals(resolve(url).func, student_grades)
+
+    def test_student_absences_url_is_resolved(self):
+        url = reverse('student_absences')
+        self.assertEquals(resolve(url).func, student_absences)
+
+    def test_student_remarks_url_is_resolved(self):
+        url = reverse('student_remarks')
+        self.assertEquals(resolve(url).func, student_remarks)
+
+    def test_student_praises_url_is_resolved(self):
+        url = reverse('student_praises')
+        self.assertEquals(resolve(url).func, student_praises)
+
+    def test_student_update_info_url_is_resolved(self):
+        url = reverse('student_update_info')
+        self.assertEquals(resolve(url).func, student_update_info)
