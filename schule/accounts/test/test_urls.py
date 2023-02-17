@@ -141,3 +141,29 @@ class TestTeacherUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, teacher_remove_subject_class)
 
 
+class TestParentUrls(SimpleTestCase):
+    def test_parent_account_url_is_resolved(self):
+        url = reverse('parent_account')
+        self.assertEquals(resolve(url).func, parent_account)
+
+    def test_parent_grades_url_is_resolved(self):
+        url = reverse('parent_grades')
+        self.assertEquals(resolve(url).func, parent_grades)
+
+    def test_parent_absences_url_is_resolved(self):
+        url = reverse('parent_absences')
+        self.assertEquals(resolve(url).func, parent_absences)
+
+    def test_parent_remarks_url_is_resolved(self):
+        url = reverse('parent_remarks')
+        self.assertEquals(resolve(url).func, parent_remarks)
+
+    def test_parent_praises_url_is_resolved(self):
+        url = reverse('parent_praises')
+        self.assertEquals(resolve(url).func, parent_praises)
+
+    def test_parent_update_info_url_is_resolved(self):
+        url = reverse('parent_update_info')
+        self.assertEquals(resolve(url).func, parent_update_info)
+
+
