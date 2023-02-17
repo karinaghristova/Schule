@@ -54,23 +54,23 @@ class TestParentViewsAccessibility(TestCase):
             first_name='Teacher', last_name='Teacher',
             email='teacher@email.com')
         self.teacher = Teacher.objects.create(user=self.teacher_user,
-        first_name=self.teacher_user.first_name, last_name=self.teacher_user.last_name,
-        email=self.teacher_user.email, school=self.school)
+                                              first_name=self.teacher_user.first_name, last_name=self.teacher_user.last_name,
+                                              email=self.teacher_user.email, school=self.school)
 
         self.student_user = User.objects.create_user(
-        username='student', password='password',
-        first_name='Student', last_name='Student', email='student@email.com')
+            username='student', password='password',
+            first_name='Student', last_name='Student', email='student@email.com')
         self.student = Student.objects.create(user=self.student_user,
-        first_name=self.student_user.first_name, last_name=self.student_user.last_name, 
-        email=self.student_user.email, school=self.school,
-        class_level=10, student_number=1)
+                                              first_name=self.student_user.first_name, last_name=self.student_user.last_name,
+                                              email=self.student_user.email, school=self.school,
+                                              class_level=10, student_number=1)
 
         self.parent_user = User.objects.create_user(
-        username='parent', password='password',
-        first_name='Parent', last_name='Parent', email='parent@email.com')
+            username='parent', password='password',
+            first_name='Parent', last_name='Parent', email='parent@email.com')
         self.parent = Parent.objects.create(user=self.parent_user,
-        first_name=self.parent_user.first_name, last_name=self.parent_user.last_name,
-        email=self.parent_user.email, school=self.school, child=self.student)
+                                            first_name=self.parent_user.first_name, last_name=self.parent_user.last_name,
+                                            email=self.parent_user.email, school=self.school, child=self.student)
 
         self.teacher_group = Group.objects.create(name='teacher')
         self.parent_group = Group.objects.create(name='parent')
@@ -81,30 +81,28 @@ class TestParentViewsAccessibility(TestCase):
         self.student_user.groups.add(self.student_group)
 
         self.subject = Subject.objects.create(name='Subject')
-        self.subject_class = SubjectClass.objects.create(class_level=10, 
-        subject=self.subject, teacher=self.teacher)
+        self.subject_class = SubjectClass.objects.create(class_level=10,
+                                                         subject=self.subject, teacher=self.teacher)
         self.subject_class.students.add(self.student)
 
         self.winter_term = Term.objects.create(name='winter')
         self.summer_term = Term.objects.create(name='summer')
 
-        self.winter_grade = Grade.objects.create(number=4, 
-        student=self.student, subject_class=self.subject_class, 
-        term=self.winter_term)
+        self.winter_grade = Grade.objects.create(number=4,
+                                                 student=self.student, subject_class=self.subject_class,
+                                                 term=self.winter_term)
 
-        self.summer_grade = Grade.objects.create(number=4, 
-        student=self.student, subject_class=self.subject_class, 
-        term=self.summer_term)
+        self.summer_grade = Grade.objects.create(number=4,
+                                                 student=self.student, subject_class=self.subject_class,
+                                                 term=self.summer_term)
 
-
-    def test_parent_account_view_is_accessible_for_users_with_group_parent(self):
+    def test_parent_account_view_is_accessible_for_users_with_group_parent_only(self):
         self.client.login(username='parent', password='password')
         response = self.client.get(reverse('parent_account'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/parent/parent_account.html')
 
-    def test_parent_account_view_is_not_accessible_for_users_outside_the_parent_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('parent_account'))
 
@@ -120,14 +118,13 @@ class TestParentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_parent_grades_view_is_accessible_for_users_with_group_parent(self):
+    def test_parent_grades_view_is_accessible_for_users_with_group_parent_only(self):
         self.client.login(username='parent', password='password')
         response = self.client.get(reverse('parent_grades'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/grades.html')
 
-    def test_parent_grades_view_is_not_accessible_for_users_users_outside_the_parent_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('parent_grades'))
 
@@ -143,14 +140,13 @@ class TestParentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_parent_absences_view_is_accessible_for_users_with_group_parent(self):
+    def test_parent_absences_view_is_accessible_for_users_with_group_parent_only(self):
         self.client.login(username='parent', password='password')
         response = self.client.get(reverse('parent_absences'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/absences.html')
 
-    def test_parent_absences_view_is_not_accessible_for_users_outside_the_parent_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('parent_absences'))
 
@@ -166,14 +162,13 @@ class TestParentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_parent_remarks_view_is_accessible_for_users_with_group_parent(self):
+    def test_parent_remarks_view_is_accessible_for_users_with_group_parent_only(self):
         self.client.login(username='parent', password='password')
         response = self.client.get(reverse('parent_remarks'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/remarks.html')
 
-    def test_parent_remarks_view_is_not_accessible_for_users_outside_the_parent_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('parent_remarks'))
 
@@ -189,14 +184,13 @@ class TestParentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_parent_praises_view_is_accessible_for_users_with_group_parent(self):
+    def test_parent_praises_view_is_accessible_for_users_with_group_parent_only(self):
         self.client.login(username='parent', password='password')
         response = self.client.get(reverse('parent_praises'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/praises.html')
 
-    def test_parent_praises_view_is_not_accessible_for_users_outside_the_parent_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('parent_praises'))
 
