@@ -96,14 +96,13 @@ class TestStudentViewsAccessibility(TestCase):
         term=self.summer_term)
 
 
-    def test_student_account_view_is_accessible_for_users_with_group_student(self):
+    def test_student_account_view_is_accessible_for_users_with_group_student_only(self):
         self.client.login(username='student', password='password')
         response = self.client.get(reverse('student_account'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/student/student_account.html')
 
-    def test_student_account_view_is_not_accessible_for_users_outside_the_student_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('student_account'))
 
@@ -119,14 +118,13 @@ class TestStudentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_student_grades_view_is_accessible_for_users_with_group_student(self):
+    def test_student_grades_view_is_accessible_for_users_with_group_student_only(self):
         self.client.login(username='student', password='password')
         response = self.client.get(reverse('student_grades'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/grades_account.html')
 
-    def test_student_grades_view_is_not_accessible_for_users_users_outside_the_student_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('student_grades'))
 
@@ -142,14 +140,13 @@ class TestStudentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_student_absences_view_is_accessible_for_users_with_group_student(self):
+    def test_student_absences_view_is_accessible_for_users_with_group_student_only(self):
         self.client.login(username='student', password='password')
         response = self.client.get(reverse('student_absences'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/absences.html')
 
-    def test_student_absences_view_is_not_accessible_for_users_outside_the_student_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('student_absences'))
 
@@ -165,14 +162,13 @@ class TestStudentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_student_remarks_view_is_accessible_for_users_with_group_student(self):
+    def test_student_remarks_view_is_accessible_for_users_with_group_student_only(self):
         self.client.login(username='student', password='password')
         response = self.client.get(reverse('student_remarks'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/remarks.html')
 
-    def test_student_remarks_view_is_not_accessible_for_users_outside_the_student_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('student_remarks'))
 
@@ -188,14 +184,13 @@ class TestStudentViewsAccessibility(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_student_praises_view_is_accessible_for_users_with_group_student(self):
+    def test_student_praises_view_is_accessible_for_users_with_group_student_only(self):
         self.client.login(username='student', password='password')
         response = self.client.get(reverse('student_praises'))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed('accounts/praises.html')
 
-    def test_student_praises_view_is_not_accessible_for_users_outside_the_student_group(self):
         self.client.login(username='teacher', password='password')
         response = self.client.get(reverse('student_praises'))
 
