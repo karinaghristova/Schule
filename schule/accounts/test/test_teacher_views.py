@@ -831,6 +831,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_subject_POST_adds_subject(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_subject')
+
         data = {'name': 'Subject2'}
 
         response = self.client.post(url, data)
@@ -841,6 +842,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_subject_POST_no_data_does_not_add_subject(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_subject')
+
         data = {}
 
         response = self.client.post(url, data)
@@ -851,6 +853,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_subject_class_POST_adds_subject_class(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_subject_class')
+
         class_level = 1
         data = {
             'class_level': class_level,
@@ -869,7 +872,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_subject_class_POST_no_data_does_not_add_subject_class(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_subject_class')
-        class_level = 1
+
         data = {}
 
         response = self.client.post(url, data)
@@ -879,6 +882,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_teacher_create_absence_POST_adds_absence(self):
         self.client.login(username='teacher', password='password')
         url = reverse('add_absence', args=[self.subject_class.id])
+
         date_today = date.today()
         data = {
             'date': date_today,
@@ -902,6 +906,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_absence_POST_no_data_does_not_add_absence(self):
         self.client.login(username='teacher', password='password')
         url = reverse('add_absence', args=[self.subject_class.id])
+
         data = {}
 
         response = self.client.post(url, data)
@@ -912,6 +917,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_remark_POST_adds_remark(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_remark')
+
         content = 'Some content'
         data = {
             'content': content,
@@ -932,6 +938,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_remark_POST_no_data_does_not_add_remark(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_remark')
+
         data = {}
 
         response = self.client.post(url, data)
@@ -942,6 +949,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_praise_POST_adds_praise(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_praise')
+
         content = 'Some content'
         data = {
             'content': content,
@@ -962,6 +970,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_create_praise_POST_no_data_does_not_add_praise(self):
         self.client.login(username='teacher', password='password')
         url = reverse('create_praise')
+
         data = {}
 
         response = self.client.post(url, data)
@@ -972,6 +981,7 @@ class TeacherViewsWithPOST(TestCase):
     def test_teacher_update_student_POST_updates_student(self):
         self.client.login(username='teacher', password='password')
         url = reverse('update_student', args=[self.student.id])
+
         student_first_name = 'Ivan'
         student_middle_name = 'Ivanov'
         student_last_name = 'Ivanov'
@@ -994,18 +1004,23 @@ class TeacherViewsWithPOST(TestCase):
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(Student.objects.first().first_name, student_first_name)
-        self.assertEquals(Student.objects.first().middle_name, student_middle_name)
+        self.assertEquals(Student.objects.first().first_name,
+                          student_first_name)
+        self.assertEquals(Student.objects.first().middle_name,
+                          student_middle_name)
         self.assertEquals(Student.objects.first().last_name, student_last_name)
         self.assertEquals(Student.objects.first().phone, student_phone)
         self.assertEquals(Student.objects.first().email,  student_email)
         self.assertEquals(Student.objects.first().school, student_school)
-        self.assertEquals(Student.objects.first().class_level, student_class_level)
-        self.assertEquals(Student.objects.first().student_number, student_student_number)
+        self.assertEquals(Student.objects.first().class_level,
+                          student_class_level)
+        self.assertEquals(Student.objects.first(
+        ).student_number, student_student_number)
 
     def test_teacher_update_student_POST_no_data_does_not_update_student(self):
         self.client.login(username='teacher', password='password')
         url = reverse('update_student', args=[self.student.id])
+
         student_first_name = self.student.first_name
         student_middle_name = self.student.middle_name
         student_last_name = self.student.last_name
@@ -1020,19 +1035,23 @@ class TeacherViewsWithPOST(TestCase):
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(Student.objects.first().first_name, student_first_name)
-        self.assertEquals(Student.objects.first().middle_name, student_middle_name)
+        self.assertEquals(Student.objects.first().first_name,
+                          student_first_name)
+        self.assertEquals(Student.objects.first().middle_name,
+                          student_middle_name)
         self.assertEquals(Student.objects.first().last_name, student_last_name)
         self.assertEquals(Student.objects.first().phone, student_phone)
         self.assertEquals(Student.objects.first().email,  student_email)
         self.assertEquals(Student.objects.first().school, student_school)
-        self.assertEquals(Student.objects.first().class_level, student_class_level)
-        self.assertEquals(Student.objects.first().student_number, student_student_number)
+        self.assertEquals(Student.objects.first().class_level,
+                          student_class_level)
+        self.assertEquals(Student.objects.first(
+        ).student_number, student_student_number)
 
     def test_teacher_update_subject_class_POST_updates_subject_class(self):
         self.client.login(username='teacher', password='password')
         url = reverse('update_subject_class', args=[self.subject_class.id])
-        
+
         subject = Subject.objects.create(name='New subject')
         subject_class_class_level = 10
         subject_class_subject = subject
@@ -1045,29 +1064,40 @@ class TeacherViewsWithPOST(TestCase):
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(SubjectClass.objects.first().class_level, subject_class_class_level)
-        self.assertEquals(SubjectClass.objects.first().subject, subject_class_subject)
+        self.assertEquals(SubjectClass.objects.first(
+        ).class_level, subject_class_class_level)
+        self.assertEquals(SubjectClass.objects.first().subject,
+                          subject_class_subject)
 
     def test_teacher_update_subject_class_POST_no_data_does_not_update_subject_class(self):
         self.client.login(username='teacher', password='password')
+
         url = reverse('update_subject_class', args=[self.subject_class.id])
+
         subject_class_class_level = self.subject_class.class_level
         subject_class_subject = self.subject_class.subject
+
         data = {}
 
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(SubjectClass.objects.first().class_level, subject_class_class_level)
-        self.assertEquals(SubjectClass.objects.first().subject, subject_class_subject)
+        self.assertEquals(SubjectClass.objects.first(
+        ).class_level, subject_class_class_level)
+        self.assertEquals(SubjectClass.objects.first().subject,
+                          subject_class_subject)
 
-    def test_teacher_update_grade_class_POST_updates_grade(self):
+    def test_teacher_update_grade_POST_updates_grade(self):
         self.client.login(username='teacher', password='password')
+
         grade_number = 4
         grade_student = self.student
         grade_subject_class = self.subject_class
         grade_term = self.summer_term
-        grade = Grade.objects.create(number=grade_number, student=grade_student, subject_class=grade_subject_class, term=grade_term)
+
+        grade = Grade.objects.create(
+            number=grade_number, student=grade_student, subject_class=grade_subject_class, term=grade_term)
+
         url = reverse('update_grade', args=[grade.id])
 
         grade_update_number = 6
@@ -1080,16 +1110,21 @@ class TeacherViewsWithPOST(TestCase):
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Grade.objects.first().number, grade_update_number)
         self.assertEquals(Grade.objects.first().student, grade_student)
-        self.assertEquals(Grade.objects.first().subject_class, grade_subject_class)
+        self.assertEquals(Grade.objects.first().subject_class,
+                          grade_subject_class)
         self.assertEquals(Grade.objects.first().term, grade_term)
 
     def test_teacher_update_grade_POST_no_data_does_not_update_grade(self):
         self.client.login(username='teacher', password='password')
+
         grade_number = 4
         grade_student = self.student
         grade_subject_class = self.subject_class
         grade_term = self.summer_term
-        grade = Grade.objects.create(number=grade_number, student=grade_student, subject_class=grade_subject_class, term=grade_term)
+
+        grade = Grade.objects.create(
+            number=grade_number, student=grade_student, subject_class=grade_subject_class, term=grade_term)
+
         url = reverse('update_grade', args=[grade.id])
         data = {}
 
@@ -1098,19 +1133,23 @@ class TeacherViewsWithPOST(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Grade.objects.first().number, grade_number)
         self.assertEquals(Grade.objects.first().student, grade_student)
-        self.assertEquals(Grade.objects.first().subject_class, grade_subject_class)
+        self.assertEquals(Grade.objects.first().subject_class,
+                          grade_subject_class)
         self.assertEquals(Grade.objects.first().term, grade_term)
 
-    def test_teacher_teacher_update_absence_POST_update_absence(self):
+    def test_teacher_update_absence_POST_update_absence(self):
         self.client.login(username='teacher', password='password')
+
         date_today = date.today()
         absence_date = date_today
         absence_excused = False
         absence_subject_class = self.subject_class
         absence_student = self.student
         absence_term = self.summer_term
-        absence = Absence.objects.create(date= absence_date, excused=absence_excused, 
-        subject_class=absence_subject_class, student=absence_student, term=absence_term)
+
+        absence = Absence.objects.create(date=absence_date, excused=absence_excused,
+                                         subject_class=absence_subject_class, student=absence_student, term=absence_term)
+
         url = reverse('update_absence', args=[absence.id])
 
         updated_absence_excused = True
@@ -1128,21 +1167,26 @@ class TeacherViewsWithPOST(TestCase):
 
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Absence.objects.first().date, absence_date)
-        self.assertEquals(Absence.objects.first().excused, updated_absence_excused)
-        self.assertEquals(Absence.objects.first().subject_class, absence_subject_class)
+        self.assertEquals(Absence.objects.first().excused,
+                          updated_absence_excused)
+        self.assertEquals(Absence.objects.first(
+        ).subject_class, absence_subject_class)
         self.assertEquals(Absence.objects.first().student, absence_student)
         self.assertEquals(Absence.objects.first().term, updated_absence_term)
 
     def test_teacher_update_absence_POST_no_data_does_not_update_absence(self):
         self.client.login(username='teacher', password='password')
+
         date_today = date.today()
         absence_date = date_today
         absence_excused = False
         absence_subject_class = self.subject_class
         absence_student = self.student
         absence_term = self.summer_term
-        absence = Absence.objects.create(date= absence_date, excused=absence_excused, 
-        subject_class=absence_subject_class, student=absence_student, term=absence_term)
+
+        absence = Absence.objects.create(date=absence_date, excused=absence_excused,
+                                         subject_class=absence_subject_class, student=absence_student, term=absence_term)
+
         url = reverse('update_absence', args=[absence.id])
         data = {}
 
@@ -1151,18 +1195,22 @@ class TeacherViewsWithPOST(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(Absence.objects.first().date, absence_date)
         self.assertEquals(Absence.objects.first().excused, absence_excused)
-        self.assertEquals(Absence.objects.first().subject_class, absence_subject_class)
+        self.assertEquals(Absence.objects.first(
+        ).subject_class, absence_subject_class)
         self.assertEquals(Absence.objects.first().student, absence_student)
         self.assertEquals(Absence.objects.first().term, absence_term)
 
     def test_teacher_update_remark_POST_updates_remark(self):
         self.client.login(username='teacher', password='password')
+
         remark_content = 'Some content'
         remark_student = self.student
         remark_teacher = self.teacher
         remark_term = self.winter_term
+
         remark = Remark.objects.create(content=remark_content, student=remark_student,
-        teacher=remark_teacher, term=remark_term)
+                                       teacher=remark_teacher, term=remark_term)
+
         url = reverse('update_remark', args=[remark.id])
 
         remark_updated_content = 'Updated content'
@@ -1177,19 +1225,23 @@ class TeacherViewsWithPOST(TestCase):
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(Remark.objects.first().content, remark_updated_content)
+        self.assertEquals(Remark.objects.first().content,
+                          remark_updated_content)
         self.assertEquals(Remark.objects.first().student, remark_student)
         self.assertEquals(Remark.objects.first().teacher, remark_teacher)
         self.assertEquals(Remark.objects.first().term, remark_updated_term)
 
     def test_teacher_update_remark_POST_no_data_does_not_update_remark(self):
         self.client.login(username='teacher', password='password')
+
         remark_content = 'Some content'
         remark_student = self.student
         remark_teacher = self.teacher
         remark_term = self.winter_term
+
         remark = Remark.objects.create(content=remark_content, student=remark_student,
-        teacher=remark_teacher, term=remark_term)
+                                       teacher=remark_teacher, term=remark_term)
+
         url = reverse('update_remark', args=[remark.id])
         data = {}
 
@@ -1203,12 +1255,15 @@ class TeacherViewsWithPOST(TestCase):
 
     def test_teacher_update_praise_POST_updates_praise(self):
         self.client.login(username='teacher', password='password')
+
         praise_content = 'Some content'
         praise_student = self.student
         praise_teacher = self.teacher
         praise_term = self.winter_term
+
         praise = Praise.objects.create(content=praise_content, student=praise_student,
-        teacher=praise_teacher, term=praise_term)
+                                       teacher=praise_teacher, term=praise_term)
+
         url = reverse('update_praise', args=[praise.id])
 
         praise_updated_content = 'Updated content'
@@ -1223,19 +1278,23 @@ class TeacherViewsWithPOST(TestCase):
         response = self.client.post(url, data)
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(Praise.objects.first().content, praise_updated_content)
+        self.assertEquals(Praise.objects.first().content,
+                          praise_updated_content)
         self.assertEquals(Praise.objects.first().student, praise_student)
         self.assertEquals(Praise.objects.first().teacher, praise_teacher)
         self.assertEquals(Praise.objects.first().term, praise_updated_term)
 
-    def test_teacher_update_remark_POST_no_data_does_not_update_remark(self):
+    def test_teacher_update_praise_POST_no_data_does_not_update_praise(self):
         self.client.login(username='teacher', password='password')
+
         praise_content = 'Some content'
         praise_student = self.student
         praise_teacher = self.teacher
         praise_term = self.winter_term
+
         praise = Praise.objects.create(content=praise_content, student=praise_student,
-        teacher=praise_teacher, term=praise_term)
+                                       teacher=praise_teacher, term=praise_term)
+
         url = reverse('update_praise', args=[praise.id])
         data = {}
 
@@ -1247,4 +1306,92 @@ class TeacherViewsWithPOST(TestCase):
         self.assertEquals(Praise.objects.first().teacher, praise_teacher)
         self.assertEquals(Praise.objects.first().term, praise_term)
 
+    def test_teacher_remove_grade_POST_removes_grade(self):
+        self.client.login(username='teacher', password='password')
 
+        grade_number = 4
+        grade_student = self.student
+        grade_subject_class = self.subject_class
+        grade_term = self.summer_term
+
+        grade = Grade.objects.create(
+            number=grade_number, student=grade_student, subject_class=grade_subject_class, term=grade_term)
+
+        grades_count_after_creating_grade = Grade.objects.all().count()
+
+        url = reverse('delete_grade', args=[grade.id])
+
+        response = self.client.post(url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Grade.objects.all().count(), 0)
+        self.assertNotEquals(Grade.objects.all().count(),
+                             grades_count_after_creating_grade)
+
+    def test_teacher_remove_absence_POST_removes_absence(self):
+        self.client.login(username='teacher', password='password')
+
+        date_today = date.today()
+        absence_date = date_today
+        absence_excused = False
+        absence_subject_class = self.subject_class
+        absence_student = self.student
+        absence_term = self.summer_term
+
+        absence = Absence.objects.create(date=absence_date, excused=absence_excused,
+                                         subject_class=absence_subject_class, student=absence_student, term=absence_term)
+
+        absences_count_after_creating_absence = Absence.objects.all().count()
+
+        url = reverse('delete_absence', args=[absence.id])
+
+        response = self.client.post(url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Absence.objects.all().count(), 0)
+        self.assertNotEquals(Absence.objects.all().count(),
+                             absences_count_after_creating_absence)
+
+    def test_teacher_remove_remark_POST_removes_remark(self):
+        self.client.login(username='teacher', password='password')
+
+        remark_content = 'Some content'
+        remark_student = self.student
+        remark_teacher = self.teacher
+        remark_term = self.winter_term
+
+        remark = Remark.objects.create(content=remark_content, student=remark_student,
+                                       teacher=remark_teacher, term=remark_term)
+
+        remarks_count_after_creating_remark = Remark.objects.all().count()
+
+        url = reverse('delete_remark', args=[remark.id])
+
+        response = self.client.post(url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Remark.objects.all().count(), 0)
+        self.assertNotEquals(Remark.objects.all().count(),
+                             remarks_count_after_creating_remark)
+
+    def test_teacher_remove_praise_POST_removes_praise(self):
+        self.client.login(username='teacher', password='password')
+
+        praise_content = 'Some content'
+        praise_student = self.student
+        praise_teacher = self.teacher
+        praise_term = self.winter_term
+
+        praise = Praise.objects.create(content=praise_content, student=praise_student,
+                                       teacher=praise_teacher, term=praise_term)
+
+        praises_count_after_creating_remark = Praise.objects.all().count()
+
+        url = reverse('delete_praise', args=[praise.id])
+
+        response = self.client.post(url)
+
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Praise.objects.all().count(), 0)
+        self.assertNotEquals(Praise.objects.all().count(),
+                             praises_count_after_creating_remark)
